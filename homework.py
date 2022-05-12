@@ -98,7 +98,7 @@ class SportsWalking(Training):
         cf_calorie_2 = 0.029
         return ((cf_calorie_1 * self.weight + (self.get_mean_speed() ** 2
                  // self.height) * cf_calorie_2 * self.weight)
-                 * (self.duration * self.M_IN_H))
+                * (self.duration * self.M_IN_H))
 
 
 class Swimming(Training):
