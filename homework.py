@@ -1,5 +1,10 @@
-from dataclasses import asdict, dataclass
-from typing import ClassVar, Dict, Type
+from dataclasses import asdict, astuple, dataclass
+from typing import Dict, Type
+
+
+INCORRECT_WORKTYPE_MESSAGE = 'No such type of training, value: {}'
+
+INCORRECT_DATA_MESSAGE = 'Incorrect data param format, work_type: {}, expected params len {}, params len {}'
 
 
 @dataclass
@@ -10,7 +15,7 @@ class InfoMessage:
     distance: float
     speed: float
     calories: float
-    message = (
+    MESSAGE = (
         'Тип тренировки: {}; '
         'Длительность: {:.3f} ч.; '
         'Дистанция: {:.3f} км; '
@@ -20,7 +25,7 @@ class InfoMessage:
 
     def get_message(self) -> str:
         """Получить строку сообщения."""
-        return self.message.format(*asdict(self).values())
+        return self.MESSAGE.format(*astuple(self))
 
 
 @dataclass
@@ -58,13 +63,21 @@ class Training:
 class Running(Training):
     """Тренировка: бег."""
     SPEED_MULTIPLIER = 18
-    MEAN_SPEED_MULTIPLIER = 20
+    MEAN_SPEED_DIFFERENCE = 20
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий при беге."""
-        return (self.SPEED_MULTIPLIER * self.get_mean_speed()
-                - self.MEAN_SPEED_MULTIPLIER
-                ) * self.weight / self.M_IN_KM * self.duration * self.M_IN_HOUR
+        return (
+            (
+                self.SPEED_MULTIPLIER 
+                * self.get_mean_speed() 
+                - self.MEAN_SPEED_DIFFERENCE 
+            ) 
+            * self.weight 
+            / self.M_IN_KM 
+            * self.duration 
+            * self.M_IN_HOUR 
+        ) 
 
 
 @dataclass
@@ -86,9 +99,9 @@ class SportsWalking(Training):
 @dataclass
 class Swimming(Training):
     """Тренировка: плавание."""
-    LEN_STEP: ClassVar[float] = 1.38
+    LEN_STEP = 1.38
     length_pool: float
-    count_pool: float
+    count_pool: int
 
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость плавания."""
@@ -98,23 +111,19 @@ class Swimming(Training):
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий при плавании."""
-        COEFF_1 = 1.1
-        COEFF_2 = 2
-        return (self.get_mean_speed() + COEFF_1) * COEFF_2 * self.weight
+        MULTIPLIER = 1.1
+        SHIFT = 2
+        return (self.get_mean_speed() + MULTIPLIER) * SHIFT * self.weight
 
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    workouts: Dict[str, Type[Training]] = {
-        'RUN': Running,
-        'WLK': SportsWalking,
-        'SWM': Swimming
-    }
-    if workout_type not in workouts:
-        raise ValueError('No such type of training!')
-    if len(data) not in (3, 4, 5):
-        raise ValueError('Incorrect data param format')
-    return workouts[workout_type](*data)
+    if workout_type == 'SWM':
+        return Swimming(*data)
+    if workout_type == 'RUN':
+        return Running(*data)
+    if workout_type == 'WLK':
+        return SportsWalking(*data)
 
 
 def main(training: Training) -> None:
