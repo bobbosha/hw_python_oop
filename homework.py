@@ -1,10 +1,14 @@
 from dataclasses import astuple, dataclass
-from typing import Dict, Type
 
 
 INCORRECT_WORKTYPE_MESSAGE = 'No such type of training, value: {}'
 
-INCORRECT_DATA_MESSAGE = 'Incorrect data param format, work_type: {}, expected params len {}, params len {}'
+INCORRECT_DATA_MESSAGE = (
+    'Incorrect data param format'
+    'work_type: {}'
+    'expected params len {}'
+    'params len {}'
+)
 
 
 @dataclass
