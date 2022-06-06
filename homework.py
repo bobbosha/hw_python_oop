@@ -1,4 +1,4 @@
-from dataclasses import asdict, astuple, dataclass
+from dataclasses import astuple, dataclass
 from typing import Dict, Type
 
 
@@ -69,15 +69,15 @@ class Running(Training):
         """Получить количество затраченных калорий при беге."""
         return (
             (
-                self.SPEED_MULTIPLIER 
-                * self.get_mean_speed() 
-                - self.MEAN_SPEED_DIFFERENCE 
-            ) 
-            * self.weight 
-            / self.M_IN_KM 
-            * self.duration 
-            * self.M_IN_HOUR 
-        ) 
+                self.SPEED_MULTIPLIER
+                * self.get_mean_speed()
+                - self.MEAN_SPEED_DIFFERENCE
+            )
+            * self.weight
+            / self.M_IN_KM
+            * self.duration
+            * self.M_IN_HOUR
+        )
 
 
 @dataclass
