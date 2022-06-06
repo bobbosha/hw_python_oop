@@ -1,5 +1,4 @@
 from dataclasses import asdict, dataclass
-from email import message
 from typing import ClassVar, Dict, Type
 
 
@@ -99,9 +98,9 @@ class Swimming(Training):
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий при плавании."""
-        COEFF_CALORIE_1 = 1.1
-        COEFF_CALORIE_2 = 2
-        return (self.get_mean_speed() + COEFF_CALORIE_1) * COEFF_CALORIE_2 * self.weight
+        COEFF_1 = 1.1
+        COEFF_2 = 2
+        return (self.get_mean_speed() + COEFF_1) * COEFF_2 * self.weight
 
 
 def read_package(workout_type: str, data: list) -> Training:
@@ -113,7 +112,7 @@ def read_package(workout_type: str, data: list) -> Training:
     }
     if workout_type not in workouts:
         raise ValueError('No such type of training!')
-    if len(data) not in (3,4,5):
+    if len(data) not in (3, 4, 5):
         raise ValueError('Incorrect data param format')
     return workouts[workout_type](*data)
 
