@@ -1,12 +1,11 @@
 from dataclasses import astuple, dataclass
 
-
 INCORRECT_WORKTYPE_MESSAGE = 'No such type of training, value: {}'
 
 INCORRECT_DATA_MESSAGE = (
-    'Incorrect data param format'
-    'work_type: {}'
-    'expected params len {}'
+    'Incorrect data param format\n'
+    'work_type: {}\n'
+    'expected params len {}\n'
     'params len {}'
 )
 
@@ -120,14 +119,22 @@ class Swimming(Training):
         return (self.get_mean_speed() + MULTIPLIER) * SHIFT * self.weight
 
 
+WORKOUTS_TYPES: dict[str, type[Training]] = { 
+    'RUN': Running, 
+    'WLK': SportsWalking, 
+    'SWM': Swimming 
+} 
+
+
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    if workout_type == 'SWM':
-        return Swimming(*data)
-    if workout_type == 'RUN':
-        return Running(*data)
-    if workout_type == 'WLK':
-        return SportsWalking(*data)
+    workout_type_class = WORKOUTS_TYPES.get(workout_type)
+    if not workout_type_class:
+        raise ValueError(INCORRECT_WORKTYPE_MESSAGE.format(workout_type))
+    expected_args_len = len(workout_type_class.__dataclass_fields__)
+    if expected_args_len != len(data):
+        raise ValueError(INCORRECT_DATA_MESSAGE.format(workout_type, expected_args_len, len(data)))
+    return workout_type_class(*data)
 
 
 def main(training: Training) -> None:
@@ -140,6 +147,9 @@ if __name__ == '__main__':
         ('SWM', [720, 1, 80, 25, 40]),
         ('RUN', [15000, 1, 75]),
         ('WLK', [9000, 1, 75, 180]),
+        
+        #('SWM1', [720, 1, 80, 25, 40]),
+        #('SWM', [720, 1, 80, 25]),
     ]
 
     for workout_type, data in packages:
