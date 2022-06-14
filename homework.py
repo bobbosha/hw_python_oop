@@ -105,7 +105,6 @@ class Swimming(Training):
     LEN_STEP = 1.38
     length_pool: float
     count_pool: int
-
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость плавания."""
         return (self.length_pool * self.count_pool
@@ -114,9 +113,9 @@ class Swimming(Training):
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий при плавании."""
-        MULTIPLIER = 1.1
-        SHIFT = 2
-        return (self.get_mean_speed() + MULTIPLIER) * SHIFT * self.weight
+        VARIABLE_1 = 1.1
+        VARIABLE_2 = 2
+        return (self.get_mean_speed() + VARIABLE_1) * VARIABLE_2 * self.weight
 
 
 WORKOUTS_TYPES: dict[str, type[Training]] = { 
