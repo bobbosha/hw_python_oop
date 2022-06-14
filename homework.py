@@ -105,6 +105,7 @@ class Swimming(Training):
     LEN_STEP = 1.38
     length_pool: float
     count_pool: int
+
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость плавания."""
         return (self.length_pool * self.count_pool
@@ -118,11 +119,11 @@ class Swimming(Training):
         return (self.get_mean_speed() + VARIABLE_1) * VARIABLE_2 * self.weight
 
 
-WORKOUTS_TYPES: dict[str, type[Training]] = { 
-    'RUN': Running, 
-    'WLK': SportsWalking, 
-    'SWM': Swimming 
-} 
+WORKOUTS_TYPES: dict[str, type[Training]] = {
+    'RUN': Running,
+    'WLK': SportsWalking,
+    'SWM': Swimming
+}
 
 
 def read_package(workout_type: str, data: list) -> Training:
@@ -132,7 +133,8 @@ def read_package(workout_type: str, data: list) -> Training:
         raise ValueError(INCORRECT_WORKTYPE_MESSAGE.format(workout_type))
     expected_args_len = len(workout_type_class.__dataclass_fields__)
     if expected_args_len != len(data):
-        raise ValueError(INCORRECT_DATA_MESSAGE.format(workout_type, expected_args_len, len(data)))
+        raise ValueError(INCORRECT_DATA_MESSAGE.format(
+            workout_type, expected_args_len, len(data)))
     return workout_type_class(*data)
 
 
@@ -146,9 +148,6 @@ if __name__ == '__main__':
         ('SWM', [720, 1, 80, 25, 40]),
         ('RUN', [15000, 1, 75]),
         ('WLK', [9000, 1, 75, 180]),
-        
-        #('SWM1', [720, 1, 80, 25, 40]),
-        #('SWM', [720, 1, 80, 25]),
     ]
 
     for workout_type, data in packages:
