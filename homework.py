@@ -1,4 +1,5 @@
 from dataclasses import astuple, dataclass
+from typing import Type
 
 INCORRECT_WORKTYPE_MESSAGE = 'No such type of training, value: {}'
 
@@ -119,7 +120,7 @@ class Swimming(Training):
         return (self.get_mean_speed() + VARIABLE_1) * VARIABLE_2 * self.weight
 
 
-WORKOUTS_TYPES: dict[str, type[Training]] = {
+WORKOUTS_TYPES: dict[str, Type[Training]] = {
     'RUN': Running,
     'WLK': SportsWalking,
     'SWM': Swimming
