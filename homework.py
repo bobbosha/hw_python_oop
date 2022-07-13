@@ -1,5 +1,5 @@
 from dataclasses import astuple, dataclass
-from typing import Type
+
 
 INCORRECT_WORKTYPE_MESSAGE = 'No such type of training, value: {}'
 
