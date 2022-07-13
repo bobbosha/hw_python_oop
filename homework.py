@@ -120,7 +120,7 @@ class Swimming(Training):
         return (self.get_mean_speed() + VARIABLE_1) * VARIABLE_2 * self.weight
 
 
-WORKOUTS_TYPES: dict[str, Type[Training]] = {
+WORKOUTS_TYPES = {
     'RUN': Running,
     'WLK': SportsWalking,
     'SWM': Swimming
