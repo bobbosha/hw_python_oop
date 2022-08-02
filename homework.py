@@ -63,7 +63,6 @@ class Training:
                            self.get_spent_calories())
 
 
-
 @dataclass
 class Running(Training):
     """Тренировка: бег."""
@@ -117,8 +116,10 @@ class Swimming(Training):
                 )
 
     def get_spent_calories(self) -> float:
-        """Получить количество затраченных калорий при плавании."""  
-        return (self.get_mean_speed() + self.SPEED_MULTIPLIER) * self.SPEED_SHIFT * self.weight
+        """Получить количество затраченных калорий при плавании."""
+        return ((self.get_mean_speed() + self.SPEED_MULTIPLIER) 
+        * self.SPEED_SHIFT * self.weight
+               )
 
 
 WORKOUTS_TYPES = {
