@@ -1,4 +1,4 @@
-from dataclasses import astuple, dataclass
+from dataclasses import astuple, dataclass, fields
 
 
 INCORRECT_WORKTYPE_MESSAGE = 'No such type of training, value: {}'
@@ -63,6 +63,7 @@ class Training:
                            self.get_spent_calories())
 
 
+
 @dataclass
 class Running(Training):
     """Тренировка: бег."""
@@ -104,6 +105,8 @@ class SportsWalking(Training):
 class Swimming(Training):
     """Тренировка: плавание."""
     LEN_STEP = 1.38
+    SPEED_MULTIPLIER = 1.1
+    SPEED_SHIFT = 2
     length_pool: float
     count_pool: int
 
@@ -114,10 +117,8 @@ class Swimming(Training):
                 )
 
     def get_spent_calories(self) -> float:
-        """Получить количество затраченных калорий при плавании."""
-        VARIABLE_1 = 1.1
-        VARIABLE_2 = 2
-        return (self.get_mean_speed() + VARIABLE_1) * VARIABLE_2 * self.weight
+        """Получить количество затраченных калорий при плавании."""  
+        return (self.get_mean_speed() + self.SPEED_MULTIPLIER) * self.SPEED_SHIFT * self.weight
 
 
 WORKOUTS_TYPES = {
@@ -132,7 +133,7 @@ def read_package(workout_type: str, data: list) -> Training:
     workout_type_class = WORKOUTS_TYPES.get(workout_type)
     if not workout_type_class:
         raise ValueError(INCORRECT_WORKTYPE_MESSAGE.format(workout_type))
-    expected_args_len = len(workout_type_class.__dataclass_fields__)
+    expected_args_len = len(fields(workout_type_class))
     if expected_args_len != len(data):
         raise ValueError(INCORRECT_DATA_MESSAGE.format(
             workout_type, expected_args_len, len(data)))
